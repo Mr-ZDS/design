@@ -1,0 +1,43 @@
+{% extends 'base/all_base.html' %}
+
+{#{% block head %}#}
+{#    <link rel="stylesheet" href="{{ url_for('static',filename='css/courses/home.css') }}">#}
+{#{% endblock %}#}
+
+
+{% block list %}
+    <li class="nav_else"><a href="{{ url_for('note.one_directory') }}">一级笔记</a></li>
+    <li class="nav_else"><a href="{{ url_for('note.record_course') }}">记笔记</a></li>
+    <li class="nav_else"><a href="{{ url_for('note.upload') }}">上传文件</a></li>
+{% endblock %}
+
+
+{% block course1 %}
+    {% for course in course1 %}
+        <a href="{{ url_for('note.second_show',course1_id=course.id) }}">{{ course.title }}</a>
+        <div class="dropdown" style="float: right">
+            <a data-toggle="dropdown" href="#" style="color: black; padding-left: 15px">▾</a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a href="#" style="font-size: 15px">编辑</a></li>
+                <li><a href="{{ url_for('note.directory_delete',course1_id=course.id) }}" style="font-size: 15px">删除</a></li>
+            </ul>
+        </div><br>
+    {% endfor %}
+{% endblock %}
+
+
+{% block show_2 %}
+    <h3>课程笔记</h3>
+    <ul>
+        {% for course2 in course2 %}
+            <li><a href="{{ url_for('note.note_detail',course2_id=course2.id) }}">{{ course2.title }}</a></li>
+        {% endfor %}
+        {% for upload in uploads %}
+            <li><a href="{{ url_for('note.file_detail',file_id=upload.id) }}">{{ upload.file_name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block show_3 %}
+{% endblock %}

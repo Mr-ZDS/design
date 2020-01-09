@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index/all_home.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <div class="show1">
+        <div class="show11">
+            <h3 style="text-align: center">笔记区</h3>
+            <ul class="question-list-group">
+                {% for course2 in course2 %}
+                    <li class="lis">
+                        <div class="avatar-group">
+                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                                 alt="" class="avatar">
+                        </div>
+                        <div class="question-group">
+                            <p class="question-title">
+                                <a href="{{ url_for('note.note_detail',course2_id=course2.id) }}">{{ course2.title }}</a>
+                            </p>
+                            <div class="question-info">
+                                <span class="question-author">{{ course2.users.username }}</span>
+                                <span class="question-time">{{ course2.create_time }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="show2">
+        <div class="show22">
+            <h3 style="text-align: center">文件区</h3>
+            <ul class="question-list-group">
+                {% for upload in upload %}
+                    <li class="lis">
+                        <div class="avatar-group">
+                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                                 alt="" class="avatar">
+                        </div>
+                        <div class="question-group">
+                            <p class="question-title"><a
+                                    href="{{ url_for('note.file_detail', file_id=upload.id) }}">{{ upload.file_name }}</a>
+                            </p>
+                            <div class="question-info">
+                                <span class="question-author">{{ upload.users.username }}</span>
+                                <span class="question-time">{{ upload.create_time }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="show3">
+        <div class="show33">
+            <h3 style="text-align: center">交流区</h3>
+            <ul class="question-list-group">
+                {% for question in questions %}
+                    <li class="lis">
+                        <div class="avatar-group">
+                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                                 alt="" class="avatar">
+                        </div>
+                        <div class="question-group">
+                            <p class="question-title"><a
+                                    href="{{ url_for('communicate.communicate_detail',question_id=question.id) }}">{{ question.title }}</a>
+                            </p>
+                            <div class="question-info">
+                                <span class="question-author">{{ question.users.username }}</span>
+                                <span class="question-time">{{ question.create_time }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/communicate/personal.css') }}">
+{% endblock %}
+
+{% block list %}
+    <li class="nav_else"><a href="{{ url_for('communicate.communicate_release') }}">提问/交流</a></li>
+{% endblock %}
+
+
+{% block main %}
+    <div class="personal">
+        <p class="name">用户名：{{ current_user.username }}</p>
+        <p class="count">我的发言次数：{{ count }}</p>
+    </div>
+    <p>我的提问/分享：</p>
+    <ul class="upload-list-group">
+        {% for context in questions %}
+            <li class="lis">
+                <div class="avatar-group">
+                    <img src="{{ url_for('static',filename='images/user.png') }}" alt="" class="avatar">
+                </div>
+                <div class="upload_group">
+                    <p class="book-title">
+                        <a href="{{ url_for('communicate.communicate_detail',question_id=context.id) }}">{{ context.title }}</a>
+                        <a style="float: right;color: white" class="btn btn-primary"
+                           href="{{ url_for('communicate.communicate_delete',question_id=context.id) }}">删除</a>
+                    </p>
+                    <p class="book-content">博文：{{ context.content }}</p>
+                    <div class="upload_info">
+                        <span class="uploader">{{ context.users.username }}</span>
+                        <span class="upload_time">{{ context.create_time }}</span>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

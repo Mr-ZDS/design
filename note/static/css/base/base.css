@@ -1,0 +1,22 @@
+.collapse {
+    background-color: #e6e1ff;
+    font-size: small;
+}
+
+.nav1 {
+    float: left;
+}
+
+.nav2 {
+    padding-right: 40px;
+    text-align: right;
+    float: right;
+}
+
+body {
+    padding-top: 7px;
+}
+
+.nav1 a{
+    color: #0f0f0f;
+}

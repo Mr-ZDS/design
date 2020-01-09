@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="jumbotron">
+        <h1 class="display-3">Hello, World!</h1>
+        <p class="lead">This is a course note for learning records.</p>
+        <hr class="my-4">
+        <h2>欢迎使用课程笔记</h2>
+        <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('note.home') }}" role="button">Learn more</a>
+        </p>
+    </div>
+{% endblock %}
+

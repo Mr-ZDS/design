@@ -1,0 +1,57 @@
+.base1{
+    width: 20%;
+    float: left;
+}
+
+.base2{
+    margin-top: 15px;
+    width: 80%;
+    float: left;
+}
+
+
+.show1{
+    margin-left: 30px;
+}
+
+.show2{
+    margin-left: 30px;
+    margin-top: 15px;
+}
+
+.show3{
+    margin-left: 30px;
+    margin-top: 15px;
+}
+
+ul li{
+    list-style: none;
+}
+
+.panel-collapse{
+    background-color: white;
+}
+
+.avatar-group img{
+    border-radius: 50%;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+.avatar-group a{
+    margin-left: 15px;
+    font-size: 15px;
+    color: #0f0f0f;
+}
+
+.add_pic img{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: auto;
+}
+
+.list{
+    float: left;
+}

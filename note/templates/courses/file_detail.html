@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/courses/file_detail.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <h3 class="page-title">{{ uploads.file_name }}</h3>
+    <p class="upload_info">
+        <span>上传者：{{ uploads.users.username }}</span>
+        <span style="padding-left: 15px">时间：{{ uploads.create_time }}</span>
+        <a style="float: right;" class="btn btn-primary"
+           href="{{ url_for('note.download',filename=uploads.file_name) }}">下载</a>
+        <a style="float: right; margin-right: 15px" class="btn btn-primary"
+           href="{{ url_for('note.online',filename=uploads.file_name) }}">查看</a>
+        {% if current_user.username==uploads.users.username or current_user.username=='admin'%}
+            <a style="float: right; margin-right: 15px" class="btn btn-primary"
+               href="{{ url_for('note.file_delete',file_id=uploads.id) }}">删除</a>
+        {% endif %}
+    </p>
+    <hr>
+    <p class="upload-content">详情：{{ uploads.intro }}</p>
+{% endblock %}

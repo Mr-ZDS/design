@@ -1,0 +1,23 @@
+.form-container {
+    width: 300px;
+    margin: 0 auto;
+}
+
+
+.flash{
+    text-align: center;
+    color: #3e92bd;
+}
+
+.main{
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.one_record{
+    text-align: center;
+    font-size: 15px;
+    margin: 7px;
+}

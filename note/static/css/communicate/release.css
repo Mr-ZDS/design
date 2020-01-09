@@ -1,0 +1,16 @@
+.form-container{
+    width: 500px;
+    margin: 0 auto;
+    text-align: right;
+}
+
+.page-title{
+    text-align: center;
+}
+
+.main{
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+}

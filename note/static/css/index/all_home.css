@@ -1,0 +1,52 @@
+.show1{
+    width: 30%;
+    float: left;
+}
+
+.show2{
+    width: 30%;
+    float: left;
+}
+
+.show3{
+    width: 40%;
+    float: left;
+}
+
+.show11{
+    padding-left: 15px;
+}
+
+.show22{
+    padding-left: 15px;
+}
+
+.show33{
+    padding-left: 15px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul li {
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.lis{
+    padding-top: 10px;
+}
+
+.avatar-group {
+    width: 40px;
+    height: 100%;
+    float: left;
+}
+
+.avatar-group .avatar {
+    width: 40px;
+    height: 40px;
+}
+

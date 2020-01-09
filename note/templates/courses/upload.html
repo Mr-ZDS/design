@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courses/upload.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <h1 style="text-align: center">上传文件</h1>
+
+    <form action="" enctype='multipart/form-data' method="POST">
+        <div class="form-container">
+            <div class="one_record">
+                课程归属
+                <select name="belong">
+                    <option value="0">无</option>
+                    {% for course1 in course %}
+                        <option value="{{course1.title}}">{{course1.title}}</option>
+                    {% endfor %}
+                </select>
+                是否公开
+                <select name="file_status">
+                    <option value="公开">公开</option>
+                    <option value="不公开">不公开</option>
+                </select>
+            </div>
+            <div class="form-group" style="padding-top: 7px">
+                <input type="file" class="form-control" name="file">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="file_name" placeholder="文件名字(包括后缀)">
+            </div>
+            <div class="form-group">
+                <textarea name="file_intro" rows="3" class="form-control" placeholder="文件简介"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="上传" class="btn btn-primary btn-block"><br>
+                若无一级课程目录，请点击下方：<br>
+                <a class="btn btn-primary btn-block" href="{{ url_for('note.one_directory') }}">创建一级目录</a>
+            </div>
+        </div>
+    </form>
+    <h2 class="flash">
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h2>
+{% endblock %}

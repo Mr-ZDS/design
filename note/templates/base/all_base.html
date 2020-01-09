@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/all_base.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="base1">
+        <div class="panel-group" id="accordion">
+
+            {% if current_user.is_authenticated %}
+                <div class="panel panel-info">
+                    <div class="avatar-group">
+                        <img src="{{ url_for('static',filename='images/user.png') }}"
+                             alt="" class="avatar" style="vertical-align:middle"><a href="#">{{ current_user.username }}</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseOne">
+                            个人中心
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body" style="padding-left: 30px">
+                        <a href="{{ url_for('communicate.communicate_personal') }}">我的发言</a><br>
+                        <a href="{{ url_for('communicate.communicate_personal') }}">我的主页</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseTwo">
+                            我的笔记
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul>
+                            <li class="add_pic">
+                                <a href="{{ url_for('note.record_course') }}">
+                                    <img src="{{ url_for('static',filename='images/add.png') }}"
+                                         alt="" class="avatar">
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="list" style="padding-left: 16px">
+                            {# 一级目录列表#}
+                            {% block course1 %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseThree">
+                            test
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        test
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () { $('#collapseOne').collapse('show')});
+            $(function () { $('#collapseTwo').collapse('show')});
+            $(function () { $('#collapseThree').collapse('hide')});
+        </script>
+    </div>
+
+    <div class="base2">
+        <div class="show2">
+{#            二级菜单列表#}
+            {% block show_2 %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

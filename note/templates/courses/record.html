@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title>Record Course</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courses/record.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+
+<body>
+    <div class="mess">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning" role="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <form action="" method="POST">
+        <div class="nav">
+            <div class="course_title">
+                课程标题：
+                <input type="text" name="real_title" placeholder="请输入课程标题">
+            </div>
+            <div class="cour1">
+                <a href="{{ url_for('note.one_directory') }}">创建一级目录</a>
+            </div>
+            <div class="one_record">
+                课程归属
+                <select name="belong">
+                    <option value="0">无</option>
+                    {% for course1 in course %}
+                        <option value="{{course1.title}}">{{course1.title}}</option>
+                    {% endfor %}
+                </select>
+                是否公开
+                <select name="course_status">
+                    <option value="公开">公开</option>
+                    <option value="不公开">不公开</option>
+                </select>
+                <input type="submit" name="submit" value="完成" class="finish">
+            </div>
+        </div>
+
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#markdown" data-toggle="tab">
+                    Markdown
+                </a>
+            </li>
+            <li><a href="#texts" data-toggle="tab">文本</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="markdown">
+                <div id="test-editormd">
+                    <textarea name="TextContent" id="TextContent"></textarea>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="texts">
+                <div class="form-group">
+                    <h3>请输入笔记内容</h3>
+                    <textarea name="text_content" rows="10" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <script type="text/javascript">
+        var testEditor;
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 540,
+                syncScrolling: "single",
+                path: "{{ url_for('static',filename='editormd/lib/') }}"
+            });
+        });
+    </script>
+
+</body>
+</html>

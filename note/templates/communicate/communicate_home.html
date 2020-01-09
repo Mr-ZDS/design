@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/communicate/communicate_home.css') }}">
+{% endblock %}
+
+{% block list %}
+    <li class="nav_else"><a href="{{ url_for('communicate.communicate_release') }}">提问/交流</a></li>
+    <li class="nav_else"><a href="{{ url_for('communicate.communicate_personal') }}">我的提问</a> </li>
+{% endblock %}
+
+{% block main %}
+    <ul class="question-list-group">
+        {% for question in questions %}
+            <li class="lis">
+                <div class="avatar-group">
+                    <img src="{{ url_for('static',filename='images/user.png') }}"
+                         alt="" class="avatar">
+                </div>
+                <div class="question-group">
+                    <p class="question-title"><a
+                            href="{{ url_for('communicate.communicate_detail', question_id=question.id) }}">{{ question.title }}</a>
+                    </p>
+                    <p class="question-content">{{ question.content }}</p>
+                    <div class="question-info">
+                        <span class="question-author">{{ question.users.username }}</span>
+                        <span class="question-time">{{ question.create_time }}</span>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
