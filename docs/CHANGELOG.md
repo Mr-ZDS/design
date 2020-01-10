@@ -63,7 +63,7 @@
 * `/note/views/index.py`
 
 
-### 2020-01-07
+### 2020-01-09
 #### Added  增加表单，将原生表单转化为wtf表单
 * `/note/forms/user.py`
 * `/note/forms/communicate.py`
@@ -73,3 +73,8 @@
 * `/note/views/user.py`
 * `/note/views/communicate.py`
 * `/note/views/note.py`
+
+
+### 2020-01-10
+#### Changed  修改`secure_filename`函数源码，让上传时支持中文名
+* `\venv\Lib\site-packages\werkzeug\utils.py`

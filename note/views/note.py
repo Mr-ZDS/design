@@ -10,6 +10,7 @@ from note.extensions import db
 from note.forms.course import Course1Form
 from note.models.course import Course1, Course2, Upload
 from note.models.user import Users
+from note.util.decorators import delete_file
 
 note_router = Blueprint("note", __name__)
 
@@ -145,7 +146,7 @@ def note_detail(course2_id):
 
 
 # 文件上传限制格式
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'doc', 'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'doc', 'png', 'jpg', 'jpeg', 'py'}
 
 
 def allow_file(filename):
@@ -246,10 +247,18 @@ def note_delete(note_id):
 
 # 文件删除
 @note_router.route('/file_delete/<file_id>')
+@delete_file
 def file_delete(file_id):
     uploads = Upload.query.filter(Upload.id == file_id).first()
+    # 数据库删除
     db.session.delete(uploads)
     db.session.commit()
+    # 项目保存的文件删除
+    basepath = os.path.dirname(__file__)
+    file = os.path.join(basepath[:-6], 'static/upload_file', uploads.file_name)
+    if os.path.exists(file):
+        os.remove(file)
+
     user_id = session.get('user_id')
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
     return render_template('courses/home.html', course1=course1)

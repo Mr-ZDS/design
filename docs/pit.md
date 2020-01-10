@@ -17,3 +17,37 @@ flask使用flask_script映射模型，在模型反转字段，两个模型字段
 
 * #### 2020-01-06
 `send_from_directory`注意传递的是否为绝对路径，返回404
+
+
+- #### 2020-01-10
+    - 文件上传时有中文
+    - 文件删除时文件夹文件不会自动删除
+    
+- 上传时文件名有中文解决，修改`secure_filename`源码
+    - `\venv\Lib\site-packages\werkzeug\utils.py`修改`secure_filename`函数
+    
+```
+def secure_filename(filename):
+    if isinstance(filename, text_type):
+        from unicodedata import normalize
+
+        filename = normalize("NFKD", filename).encode("utf-8", "ignore")
+        if not PY2:
+            filename = filename.decode("utf-8")
+    for sep in os.path.sep, os.path.altsep:
+        if sep:
+            filename = filename.replace(sep, " ")
+
+    _filename_ascii_add_strip_re = re.compile(r'[^A-Za-z0-9_\u4E00-\u9FBF.-]')
+    filename = str(_filename_ascii_add_strip_re.sub('', '_'.join(
+        filename.split()))).strip('._')
+
+    if (
+        os.name == "nt"
+        and filename
+        and filename.split(".")[0].upper() in _windows_device_files
+    ):
+        filename = "_" + filename
+
+    return filename
+```
