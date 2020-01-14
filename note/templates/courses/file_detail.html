@@ -10,7 +10,8 @@
     <h3 class="page-title">{{ uploads.file_name }}</h3>
     <p class="upload_info">
         <span>上传者：{{ uploads.users.username }}</span>
-        <span style="padding-left: 15px">时间：{{ uploads.create_time }}</span>
+        <span style="padding-left: 15px">时间：{{ uploads.create_time }}</span><br>
+        <span>权限:{{ uploads.status }}</span>
         <a style="float: right;" class="btn btn-primary"
            href="{{ url_for('note.download',filename=uploads.file_name) }}">下载</a>
         <a style="float: right; margin-right: 15px" class="btn btn-primary"

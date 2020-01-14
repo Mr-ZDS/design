@@ -78,3 +78,12 @@
 ### 2020-01-10
 #### Changed  修改`secure_filename`函数源码，让上传时支持中文名
 * `\venv\Lib\site-packages\werkzeug\utils.py`
+
+
+### 2020-01-14
+#### Add  新增头像更换功能,相应视图及界面
+* `/note/templates/users/reicon.html`
+
+#### Changed
+* `/note/models/user.py`  新增`icon`字段
+* `/note/views/user.py`

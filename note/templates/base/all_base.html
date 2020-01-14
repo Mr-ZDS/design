@@ -8,14 +8,7 @@
     <div class="base1">
         <div class="panel-group" id="accordion">
 
-            {% if current_user.is_authenticated %}
-                <div class="panel panel-info">
-                    <div class="avatar-group">
-                        <img src="{{ url_for('static',filename='images/user.png') }}"
-                             alt="" class="avatar" style="vertical-align:middle"><a href="#">{{ current_user.username }}</a>
-                    </div>
-                </div>
-            {% endif %}
+            {% block icon %}{% endblock %}
 
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -29,7 +22,8 @@
                 <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body" style="padding-left: 30px">
                         <a href="{{ url_for('communicate.communicate_personal') }}">我的发言</a><br>
-                        <a href="{{ url_for('communicate.communicate_personal') }}">我的主页</a>
+                        <a href="{{ url_for('communicate.communicate_personal') }}">我的主页</a><br>
+                        <a href="{{ url_for('user.re_icon') }}">更换头像</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +66,7 @@
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body">
-                        test
+                        {% block time %}{% endblock %}
                     </div>
                 </div>
             </div>

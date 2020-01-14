@@ -12,12 +12,12 @@
         <div class="form-container">
             <div class="one_record">
                 课程归属
-                <select name="belong">
+                <select name="belong" style="margin: 5px">
                     <option value="0">无</option>
                     {% for course1 in course %}
                         <option value="{{course1.title}}">{{course1.title}}</option>
                     {% endfor %}
-                </select>
+                </select><br>
                 是否公开
                 <select name="file_status">
                     <option value="公开">公开</option>
@@ -28,15 +28,15 @@
                 <input type="file" class="form-control" name="file">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="file_name" placeholder="文件名字(包括后缀)">
+                {{ form.file_name }}
             </div>
             <div class="form-group">
-                <textarea name="file_intro" rows="3" class="form-control" placeholder="文件简介"></textarea>
+                {{ form.file_intro }}
             </div>
             <div class="form-group">
-                <input type="submit" value="上传" class="btn btn-primary btn-block"><br>
+                {{ form.submit }}
                 若无一级课程目录，请点击下方：<br>
-                <a class="btn btn-primary btn-block" href="{{ url_for('note.one_directory') }}">创建一级目录</a>
+                <a class="btn btn-primary btn-block" style="color:#000;" href="{{ url_for('note.one_directory') }}">创建一级目录</a>
             </div>
         </div>
     </form>

@@ -3,6 +3,7 @@ from wtforms import SubmitField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
 
 
+# 提问交流表单
 class CommForm(FlaskForm):
     title = StringField(
         validators=[
@@ -25,6 +26,26 @@ class CommForm(FlaskForm):
     )
     submit = SubmitField(
         '完成',
+        render_kw={
+            'class': 'btn btn-primary'
+        }
+    )
+
+
+# 评论表单
+class RepForm(FlaskForm):
+    answer_content = StringField(
+        validators=[
+            DataRequired(message='请输入评论内容')
+        ],
+        render_kw={
+            'placeholder': '请填写你的回复',
+            'class': 'form-control',
+            'rows': 3
+        }
+    )
+    submit = SubmitField(
+        '立即评论',
         render_kw={
             'class': 'btn btn-primary'
         }

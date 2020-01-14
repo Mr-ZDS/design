@@ -14,7 +14,7 @@
                 {% for course2 in course2 %}
                     <li class="lis">
                         <div class="avatar-group">
-                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                            <img src="http://127.0.0.1:5000/static/images/icon/{{ course2.users.icon }}"
                                  alt="" class="avatar">
                         </div>
                         <div class="question-group">
@@ -39,7 +39,7 @@
                 {% for upload in upload %}
                     <li class="lis">
                         <div class="avatar-group">
-                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                            <img src="http://127.0.0.1:5000/static/images/icon/{{ upload.users.icon }}"
                                  alt="" class="avatar">
                         </div>
                         <div class="question-group">
@@ -64,7 +64,7 @@
                 {% for question in questions %}
                     <li class="lis">
                         <div class="avatar-group">
-                            <img src="{{ url_for('static',filename='images/user.png') }}"
+                            <img src="http://127.0.0.1:5000/static/images/icon/{{ question.users.icon }}"
                                  alt="" class="avatar">
                         </div>
                         <div class="question-group">

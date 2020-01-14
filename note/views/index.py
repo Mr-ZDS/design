@@ -40,6 +40,4 @@ def search():
     return render_template('index/all_home.html', **context)
 
 
-@index_router.route('/test/')
-def test():
-    return render_template('test.html')
+

@@ -79,3 +79,23 @@ class RegisterForm(FlaskForm):
             'class': 'btn btn-primary btn-block'
         }
     )
+
+
+class ReiconForm(FlaskForm):
+    icon_name = StringField(
+        validators=[
+            DataRequired(message='请输入头像名'),
+            Length(4, 20)
+        ],
+        render_kw={
+            'placeholder': '请输入头像名称',
+            'class': 'form-control'
+        }
+    )
+    submit = SubmitField(
+        '立即更换',
+        render_kw={
+            'class': 'btn btn-primary btn-block'
+        }
+    )
+

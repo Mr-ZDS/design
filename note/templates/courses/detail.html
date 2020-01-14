@@ -10,7 +10,8 @@
     <h3 class="page-title">标题:{{ detail.title }}</h3>
     <p class="question-info">
         <span>课程归属:{{ detail.course1.title }}</span><br>
-        <span>创建时间:{{ detail.create_time }}</span>
+        <span>权限:{{ detail.status }}</span><br>
+        <span>创建时间:{{ detail.create_time }}</span><br>
         {% if current_user.username==detail.users.username or current_user.username=='admin'%}
             <a style="float: right; margin-right: 15px" class="btn btn-primary"
                href="{{ url_for('note.note_delete',note_id=detail.id) }}">删除</a>

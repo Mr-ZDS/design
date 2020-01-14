@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courses/upload.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <h1 style="text-align: center">更换头像</h1>
+
+    <form action="" enctype='multipart/form-data' method="POST">
+        <div class="form-container">
+            <div class="form-group" style="padding-top: 7px">
+                <input type="file" class="form-control" name="file">
+            </div>
+            <div class="form-group">
+                {{ form.icon_name }}
+            </div>
+            <div class="form-group">
+                {{ form.submit }}
+            </div>
+        </div>
+    </form>
+    <h2 class="flash">
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h2>
+{% endblock %}

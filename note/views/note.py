@@ -1,13 +1,13 @@
 import os
 
 from flask import Blueprint, render_template, request, flash, redirect, session, \
-    url_for, send_from_directory, current_app, send_file
+    url_for, send_from_directory
 from flask_login import login_required
 import markdown
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.course import Course1Form
+from note.forms.course import Course1Form, UploadForm
 from note.models.course import Course1, Course2, Upload
 from note.models.user import Users
 from note.util.decorators import delete_file
@@ -18,8 +18,13 @@ note_router = Blueprint("note", __name__)
 @note_router.route('/home/')
 def home():
     user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
-    return render_template('courses/home.html', course1=course1)
+    return render_template(
+        'courses/home.html',
+        course1=course1,
+        users=users
+    )
 
 
 # 一级目录输入
@@ -129,13 +134,19 @@ def record_course():
 @note_router.route('/second_show/<course1_id>')
 def second_show(course1_id):
     user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
     course2 = Course2.query.filter(Course2.course1_id == course1_id,
                                    Course2.user_id == user_id).all()
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
     uploads = Upload.query.filter(Upload.user_id == user_id,
                                   Upload.course1_id == course1_id).all()
-    return render_template('courses/home.html', course2=course2,
-                           course1=course1, uploads=uploads)
+    return render_template(
+        'courses/home.html',
+        course2=course2,
+        course1=course1,
+        uploads=uploads,
+        users=users
+    )
 
 
 # 二级笔记展示
@@ -158,10 +169,15 @@ def allow_file(filename):
 @note_router.route('/upload/', methods=['GET', 'POST'])
 @login_required
 def upload():
+    form = UploadForm()
     user_id = session.get('user_id')
     visit = Course1.query.filter(Course1.user_id == user_id).all()
     if request.method == 'GET':
-        return render_template('courses/upload.html', course=visit)
+        return render_template(
+            'courses/upload.html',
+            course=visit,
+            form=form
+        )
     else:
         f = request.files['file']
         if allow_file(f.filename):
@@ -173,21 +189,24 @@ def upload():
             f.save(upload_path)
         else:
             flash('书籍格式错误或者上传错误！！！！')
-            return render_template('courses/upload.html', course=visit)
+            return render_template(
+                'courses/upload.html',
+                course=visit,
+                form=form
+            )
 
         belong = request.form.get('belong')
         status = request.form.get('file_status')
-        file_name = request.form.get('file_name')
-        intro = request.form.get('file_intro')
+        file_name = form.file_name.data
+        intro = form.file_intro.data
 
-        # 文件名不能为空，文件描述可以为空
-        if len(file_name.strip()) == 0:
-            flash('文件名不能为空！！！')
-            return render_template('courses/upload.html', course=visit)
         # 个人没有选择一级目录时需要重新创建，默认为无
         if belong == '0':
             flash('请先选择或创建课程归属！！！')
-            return render_template('courses/upload.html', course=visit)
+            return render_template(
+                'courses/upload.html',
+                course=visit,
+                form=form)
         # 同级目录下不能有相同的笔记名或文件名
         course1 = Course1.query.filter(Course1.title == belong).first()
         if Upload.query.filter(Upload.user_id == user_id,
@@ -198,7 +217,11 @@ def upload():
                     Course2.user_id == user_id,
                     Course2.course1_id == course1.id).first():
             flash('此文件名或笔记已经存在！！！')
-            return render_template('courses/upload.html', course=visit)
+            return render_template(
+                'courses/upload.html',
+                course=visit,
+                form=form
+            )
 
         upload_file = Upload(file_name=file_name, intro=intro, status=status)
         users = Users.query.filter(Users.id == user_id).first()
@@ -213,7 +236,10 @@ def upload():
 @note_router.route('/file_detail/<file_id>/')
 def file_detail(file_id):
     uploads = Upload.query.filter(Upload.id == file_id).first()
-    return render_template('courses/file_detail.html', uploads=uploads)
+    return render_template(
+        'courses/file_detail.html',
+        uploads=uploads
+    )
 
 
 # 下载文件
@@ -242,7 +268,10 @@ def note_delete(note_id):
     db.session.commit()
     user_id = session.get('user_id')
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
-    return render_template('courses/home.html', course1=course1)
+    return render_template(
+        'courses/home.html',
+        course1=course1
+    )
 
 
 # 文件删除
@@ -261,7 +290,10 @@ def file_delete(file_id):
 
     user_id = session.get('user_id')
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
-    return render_template('courses/home.html', course1=course1)
+    return render_template(
+        'courses/home.html',
+        course1=course1
+    )
 
 
 # 直接删除整个一级课程目录
@@ -276,4 +308,15 @@ def directory_delete(course1_id):
     db.session.commit()
     user_id = session.get('user_id')
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
-    return render_template('courses/home.html', course1=course1)
+    return render_template(
+        'courses/home.html',
+        course1=course1
+    )
+
+# 笔记按月归档
+# @note_router.route('/sort')
+# def sort():
+#     from sqlalchemy import extract, and_
+#     visit1 = Course2.query.filter(extract('year', Course2.date) == 2019).all()
+#     visit2 = Course2.query.filter(extract('year', Course2.date) == 2020).all()
+#     return render_template('courses/home.html', visit1=visit1, visit2=visit2)

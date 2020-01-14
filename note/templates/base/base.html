@@ -22,7 +22,7 @@
 <body>
 <div class="collapses navbar-collapse" id="bs-example-navbar-collapse-2">
     <div class="nav_logo">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ url_for('note.home') }}">
             <img class="logo" src="{{ url_for('static',filename='images/logo.png') }}" alt="" width="80" height="40">
         </a>
     </div>
@@ -48,6 +48,7 @@
         </ul>
     </div>
 </div>
+
 
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <div class="nav1">

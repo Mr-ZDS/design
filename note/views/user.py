@@ -1,21 +1,28 @@
+import os
+
 from flask import Blueprint, render_template, request, flash, redirect, session, \
     url_for
 from flask_login import login_user, logout_user
+from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.user import LoginForm, RegisterForm
+from note.forms.user import LoginForm, RegisterForm, ReiconForm
 from note.models.user import Users
+from note.util.decorators import delete_icon
 
 user_router = Blueprint("user", __name__)
 
 
-# 注册
+# 注册,wtform表单
 @user_router.route("/register/", methods=['GET', 'POST'])
 def register():
     reg_form = RegisterForm()
     login_form = LoginForm()
     if request.method == "GET":
-        return render_template('users/register.html', form=reg_form)
+        return render_template(
+            'users/register.html',
+            form=reg_form
+        )
     else:
         if not reg_form.validate_on_submit():
             flash(reg_form.errors)
@@ -37,6 +44,7 @@ def register():
         return redirect(url_for('user.login', form=login_form))
 
 
+# 原生表单
 # @user_router.route("/register/", methods=['GET', 'POST'])
 # def register():
 #     if request.method == "GET":
@@ -73,7 +81,7 @@ def register():
 #                 return redirect(url_for('user.login'))
 
 
-# 登录
+# 登录，wtf表单
 @user_router.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -92,9 +100,13 @@ def login():
             return redirect(url_for('index.index'))
         else:
             flash('账号或密码错误！！！')
-            return render_template('users/login.html', form=form)
+            return render_template(
+                'users/login.html',
+                form=form
+            )
 
 
+# 原生登录表单
 # @user_router.route('/login/', methods=['GET', 'POST'])
 # def login():
 #     if request.method == 'GET':
@@ -113,8 +125,50 @@ def login():
 #             return render_template('users/login.html')
 
 
+# 图片上传限制格式
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+
+def allow_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[
+        1].lower() in ALLOWED_EXTENSIONS
+
+
 # 注销
 @user_router.route('/logout/')
 def logout():
     logout_user()
     return redirect(url_for('user.login'))
+
+
+@user_router.route('/re_icon/', methods=['GET', 'POST'])
+@delete_icon
+def re_icon():
+    form = ReiconForm()
+    user_id = session.get('user_id')
+    if request.method == 'GET':
+        return render_template(
+            'users/reicon.html',
+            form=form
+        )
+    else:
+        f = request.files['file']
+        if allow_file(f.filename):
+            # 当前文件所在路径
+            basepath = os.path.dirname(__file__)
+            # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+            upload_path = os.path.join(basepath[:-6], 'static/images/icon',
+                                       secure_filename(f.filename))
+            f.save(upload_path)
+        else:
+            flash('头像格式错误或者上传错误！！！！')
+            return render_template('users/reicon.html', form=form)
+        if Users.query.filter(Users.icon == form.icon_name.data).first():
+            flash('此头像名已存在！！！')
+            return render_template('users/reicon.html', form=form)
+
+        # 上传图像后修改数据库数据并提交
+        users = Users.query.filter(Users.id == user_id).first()
+        users.icon = form.icon_name.data
+        db.session.commit()
+        return redirect(url_for('note.home'))
