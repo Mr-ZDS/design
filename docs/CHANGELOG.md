@@ -81,9 +81,11 @@
 
 
 ### 2020-01-14
-#### Add  新增头像更换功能,相应视图及界面
+#### Add  新增头像更换功能、文章编辑功能及相应视图及界面;
 * `/note/templates/users/reicon.html`
+* `/note/templates/communicate/update_comm.html`
 
 #### Changed
 * `/note/models/user.py`  新增`icon`字段
-* `/note/views/user.py`
+* `/note/views/user.py`   头像更换路由
+* `/note/views/communicate.py` 文章、笔记编辑

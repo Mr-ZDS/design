@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courses/one_directory.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <form action="" method="POST">
+        <div>
+            <div class="one_record" style="text-align: center">
+                请选择是否公开
+                <select name="status">
+                    <option value="公开">公开</option>
+                    <option value="不公开">不公开</option>
+                </select>
+            </div>
+            <div class="form-container" style="float: left">
+                <div class="form-group" style="padding-top: 20px">
+                    {{ form.title }}
+                </div>
+                <p>{{ form.submit }}</p>
+                {{ form.csrf_token}}
+            </div>
+        </div>
+    </form>
+    <div class="mess" style="margin-top: 100px">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning" role="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,7 +1,17 @@
 {% extends 'base/all_base.html' %}
 
 {#{% block head %}#}
-{#    <link rel="stylesheet" href="{{ url_for('static',filename='css/courses/home.css') }}">#}
+{#    <script>#}
+{#        function update_one_directory() {#}
+{#            var directory = prompt("请更改一级目录",{{ course1.title }});#}
+{#            if (directory != null){#}
+{#                alert("更改后的目录为：" + directory);#}
+{#            }#}
+{#            else{#}
+{#                alert("你按了[取消]按钮");#}
+{#            }#}
+{#        }#}
+{#    </script>#}
 {#{% endblock %}#}
 
 {% block icon %}
@@ -30,7 +40,7 @@
         <div class="dropdown" style="float: right">
             <a data-toggle="dropdown" href="#" style="color: black; padding-left: 15px">▾</a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <li><a href="#" style="font-size: 15px">编辑</a></li>
+                <li><a href="{{ url_for('note.update_one_directory', course1_id=course.id) }}" style="font-size: 15px">编辑</a></li>
                 <li><a href="{{ url_for('note.directory_delete',course1_id=course.id) }}" style="font-size: 15px">删除</a></li>
             </ul>
         </div><br>

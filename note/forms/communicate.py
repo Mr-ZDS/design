@@ -50,3 +50,30 @@ class RepForm(FlaskForm):
             'class': 'btn btn-primary'
         }
     )
+
+
+# 更新表单
+class RecommForm(FlaskForm):
+    title = StringField(
+        validators=[
+            DataRequired(message='标题不能为空，请输入标题')
+        ],
+        render_kw={
+            'class': 'form-control'
+        }
+    )
+    content = TextAreaField(
+        validators=[
+            DataRequired()
+        ],
+        render_kw={
+            'class': 'form-control',
+            'rows': 5
+        }
+    )
+    submit = SubmitField(
+        '立即更新',
+        render_kw={
+            'class': 'btn btn-primary'
+        }
+    )

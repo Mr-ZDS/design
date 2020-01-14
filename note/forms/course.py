@@ -49,3 +49,20 @@ class UploadForm(FlaskForm):
             'class': 'btn btn-primary btn-block'
         }
     )
+
+
+# 一级目录更新表单
+class Recourse1Form(FlaskForm):
+    title = TextAreaField(
+        validators=[
+            DataRequired(message='标题不能为空，请输入标题'),
+            Length(1, 100)
+        ],
+        render_kw={
+            'rows': 1,
+            'cols': 70
+        }
+    )
+    submit = SubmitField(
+        '立即更新'
+    )

@@ -4,7 +4,7 @@ from flask_login import login_required
 from sqlalchemy import desc
 
 from note.extensions import db
-from note.forms.communicate import CommForm
+from note.forms.communicate import CommForm, RecommForm
 from note.models.communicate import Question, Answer
 from note.models.user import Users
 
@@ -117,3 +117,25 @@ def communicate_delete(question_id):
     db.session.delete(question)
     db.session.commit()
     return redirect(url_for('communicate.communicate_personal'))
+
+
+@communicate_router.route('/update_comm/<question_id>', methods=['GET', 'POST'])
+def update_comm(question_id):
+    form = RecommForm()
+    question = Question.query.filter(Question.id == question_id).first()
+    form.title.data = question.title
+    form.content.data = question.content
+    if request.method == 'GET':
+        return render_template('communicate/update_comm.html', form=form)
+    else:
+        if not form.validate_on_submit():
+            flash(form.errors)
+            return render_template(
+                'communicate/update_comm.html',
+                form=form
+            )
+        form1 = RecommForm()
+        question.title = form1.title.data
+        question.content = form1.content.data
+        db.session.commit()
+        return redirect(url_for('communicate.communicate_home'))

@@ -7,7 +7,7 @@ import markdown
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.course import Course1Form, UploadForm
+from note.forms.course import Course1Form, UploadForm, Recourse1Form
 from note.models.course import Course1, Course2, Upload
 from note.models.user import Users
 from note.util.decorators import delete_file
@@ -319,6 +319,7 @@ def directory_delete(course1_id):
         users=users
     )
 
+
 # 笔记按月归档
 # @note_router.route('/sort')
 # def sort():
@@ -326,3 +327,32 @@ def directory_delete(course1_id):
 #     visit1 = Course2.query.filter(extract('year', Course2.date) == 2019).all()
 #     visit2 = Course2.query.filter(extract('year', Course2.date) == 2020).all()
 #     return render_template('courses/home.html', visit1=visit1, visit2=visit2)
+
+
+@note_router.route('/update_one_directory/<course1_id>', methods=['GET', 'POST'])
+def update_one_directory(course1_id):
+    course1 = Course1.query.filter(Course1.id == course1_id).first()
+    form = Recourse1Form()
+    form.title.data = course1.title
+    if request.method == 'POST':
+        if not form.validate_on_submit():
+            flash(form.errors)
+            return render_template(
+                'courses/update_one_directory.html',
+                form=form
+            )
+        status = request.form.get('status')
+        user_id = session.get('user_id')
+        form1 = Recourse1Form()
+        if Course1.query.filter(Course1.title == form1.title.data,
+                                Course1.user_id == user_id).first():
+            flash('该课程目录已经存在，请重新输入标题！！！')
+            return render_template(
+                'courses/update_one_directory.html',
+                form=form
+            )
+        course1.title = form1.title.data
+        course1.status = status
+        db.session.commit()
+        return redirect(url_for('note.home'))
+    return render_template('courses/update_one_directory.html', form=form)
