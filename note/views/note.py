@@ -267,10 +267,12 @@ def note_delete(note_id):
     db.session.delete(course2)
     db.session.commit()
     user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
     return render_template(
         'courses/home.html',
-        course1=course1
+        course1=course1,
+        users=users
     )
 
 
@@ -289,10 +291,12 @@ def file_delete(file_id):
         os.remove(file)
 
     user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
     return render_template(
         'courses/home.html',
-        course1=course1
+        course1=course1,
+        users=users
     )
 
 
@@ -307,10 +311,12 @@ def directory_delete(course1_id):
     db.session.delete(course1)
     db.session.commit()
     user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
     course1 = Course1.query.filter(Course1.user_id == user_id).all()
     return render_template(
         'courses/home.html',
-        course1=course1
+        course1=course1,
+        users=users
     )
 
 # 笔记按月归档

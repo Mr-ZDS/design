@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, render_template, request, flash, redirect, session, \
     url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
@@ -142,6 +142,7 @@ def logout():
 
 
 @user_router.route('/re_icon/', methods=['GET', 'POST'])
+@login_required
 @delete_icon
 def re_icon():
     form = ReiconForm()
