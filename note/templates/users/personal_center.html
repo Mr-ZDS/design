@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/users/personal_center.css') }}">
+{% endblock %}
+
+
+{% block main %}
+    <div class="user">
+        <div class="avatar-group">
+            <img src="http://127.0.0.1:5000/static/images/icon/{{ users.icon }}"
+                 alt="" class="avatar">
+        </div>
+        <div>
+            <p>用户名： {{ users.username }}</p>
+            <p>账号： {{ users.telephone }}</p>
+            <p>密码： ******</p>
+            <p>
+                <a href="{{ url_for('user.re_icon') }}">更换头像</a>
+                <a href="{{ url_for('user.update_user') }}">资料编辑</a>
+            </p>
+            <p>提问次数： {{ ques_count }}</p>
+            <p>笔记： {{ course2_count }}</p>
+            <p>文件： {{ upload_count }}</p>
+        </div>
+    </div>
+
+    <div class="lists">
+        <h3>我的提问({{ ques_count }})</h3>
+        <ul class="question-list-group">
+            {% for question in question %}
+            <li class="lis">
+                <p class="question-title">
+                    <a href="{{ url_for('communicate.communicate_detail', question_id=question.id) }}">{{ question.title }}</a>
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="lists">
+        <h3>我的笔记({{ course2_count }})</h3>
+        <ul class="question-list-group">
+            {% for course2 in course2 %}
+            <li class="lis">
+                <p class="question-title">
+                    <a href="{{ url_for('note.note_detail', course2_id=course2.id) }}">{{ course2.title }}</a>
+                    {% if course2.status=='不公开' %}
+                        <span style="color: red">(隐私)</span>
+                    {% endif %}
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="lists">
+        <h3>我的文件({{ upload_count }})</h3>
+        <ul class="question-list-group">
+            {% for upload in upload %}
+            <li class="lis">
+                <p class="question-title">
+                    <a href="{{ url_for('note.file_detail', file_id=upload.id) }}">{{ upload.file_name }}</a>
+                    {% if upload.status=='不公开' %}
+                        <span style="color: red">(隐私)</span>
+                    {% endif %}
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

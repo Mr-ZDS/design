@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from sqlalchemy import desc
 
-from note.models.communicate import Question
+from note.models.communicate import Question, Answer
 from note.models.course import Course2, Upload
 
 index_router = Blueprint("index", __name__)
@@ -40,4 +40,15 @@ def search():
     return render_template('index/all_home.html', **context)
 
 
+# 按评论数显示可公开文本、文件
+@index_router.route('/rep_sort_home/')
+def rep_sort_home():
+    questions = Question.query.all()
+    visit = []
+    for question in questions:
+        count = Answer.query.filter(Answer.question_id == question.id).count()
+        visit.append([question, count])
+    # 评论数倒序
+    res = sorted(visit, key=(lambda x: x[1]), reverse=True)
 
+    return render_template('index/rep_sort_home.html', res=res)

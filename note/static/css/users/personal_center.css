@@ -1,0 +1,43 @@
+.main{
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+}
+
+ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+ul li{
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.user{
+    width: 300px;
+    margin: 0 auto;
+}
+
+.avatar-group{
+    width: 50px;
+    height: 100%;
+}
+
+.avatar-group img{
+    border-radius: 50%;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+.question-title a{
+    color: #259;
+    font-size: 14px;
+}
+
+.lists{
+    margin-top: 30px;
+    width: 600px;
+}

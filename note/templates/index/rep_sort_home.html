@@ -11,22 +11,26 @@
 
 {% block main %}
     <ul class="question-list-group">
-        {% for question in questions %}
+        {% for question in res %}
             <li class="lis">
                 <div class="avatar-group">
-                    <img src="http://127.0.0.1:5000/static/images/icon/{{ question.users.icon }}"
+                    <img src="http://127.0.0.1:5000/static/images/icon/{{ question[0].users.icon }}"
                          alt="" class="avatar">
                 </div>
                 <div class="question-group">
-                    <p class="question-title"><a
-                            href="{{ url_for('communicate.communicate_detail', question_id=question.id) }}">{{ question.title }}</a>
+                    <p class="question-title">
+                        <a
+                            href="{{ url_for('communicate.communicate_detail', question_id=question[0].id) }}">
+                            {{ question[0].title }}
+                            <span style="color: red">({{ question[1] }})</span>
+                        </a>
                     </p>
                     <div style="height: 30px">
-                        <pre class="question-content" style="background-color: white; border: 0">{{ question.content }}</pre>
+                        <pre class="question-content" style="background-color: white; border: 0">{{ question[0].content }}</pre>
                     </div>
                     <div class="question-info">
-                        <span class="question-author">{{ question.users.username }}</span>
-                        <span class="question-time">{{ question.create_time }}</span>
+                        <span class="question-author">{{ question[0].users.username }}</span>
+                        <span class="question-time">{{ question[0].create_time }}</span>
                     </div>
                 </div>
             </li>

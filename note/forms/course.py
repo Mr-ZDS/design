@@ -8,7 +8,7 @@ class Course1Form(FlaskForm):
     title = TextAreaField(
         validators=[
             DataRequired(message='标题不能为空，请输入标题'),
-            Length(1, 100)
+            Length(1, 100, message='请正确输入笔记目录，1-100个字符')
         ],
         render_kw={
             'placeholder': '请输入课程标题',
@@ -56,7 +56,7 @@ class Recourse1Form(FlaskForm):
     title = TextAreaField(
         validators=[
             DataRequired(message='标题不能为空，请输入标题'),
-            Length(1, 100)
+            Length(1, 100, message='请正确输入笔记目录，1-100个字符')
         ],
         render_kw={
             'rows': 1,

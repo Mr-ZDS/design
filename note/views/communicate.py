@@ -119,6 +119,7 @@ def communicate_delete(question_id):
     return redirect(url_for('communicate.communicate_personal'))
 
 
+# 发言更新
 @communicate_router.route('/update_comm/<question_id>', methods=['GET', 'POST'])
 def update_comm(question_id):
     form = RecommForm()

@@ -39,7 +39,7 @@
         <ul class="nav nav-pills nav-stacked">
             {% if current_user.is_authenticated  %}
                 <li class="nav"><a href="#">私信</a></li>
-                <li class="nav"><a href="#">{{ current_user.username }}</a> </li>
+                <li class="nav"><a href="{{ url_for('user.personal_center') }}">{{ current_user.username }}</a> </li>
                 <li class="nav"><a href="{{ url_for('user.logout') }}">注销</a> </li>
             {% else %}
                 <li class="nav"><a href="{{ url_for('user.login') }}">登录</a> </li>
@@ -57,7 +57,7 @@
             <li class="nav"><a href="{{ url_for('note.home') }}">笔记</a></li>
             <li class="nav"><a href="{{ url_for('communicate.communicate_home') }}">交流区</a> </li>
             <li class="nav"><a href="#">程序员笑话</a></li>
-            <li class="nav"><a href="#">程序人生</a></li>
+            <li class="nav"><a href="{{ url_for('index.rep_sort_home') }}">程序人生</a></li>
             {% block list %}{% endblock %}
         </ul>
     </div>

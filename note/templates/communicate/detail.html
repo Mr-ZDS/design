@@ -21,7 +21,7 @@
         {% endif %}
     </p>
     <hr>
-    <pre class="question-content">{{ question.content }}</pre>
+    <pre class="question-content" style="font-size: 13px">{{ question.content }}</pre>
     <hr>
     <div class="page">
         <h4>评论：({{ count }})</h4>
@@ -46,12 +46,12 @@
         {% for answer in question.answers %}
             <li>
                 <div class="user-info">
-                    <img src="{{ url_for('static',filename='images/user.png') }}"
+                    <img src="http://127.0.0.1:5000/static/images/icon/{{ answer.answer_name.icon }}"
                          alt="" class="avatar">
                     <span class="username">{{ answer.answer_name.username }}</span>
                     <span class="create-time">{{ answer.create_time }}</span>
                 </div>
-                <p class="answer-content">{{ answer.content }}</p>
+                <p class="answer-content" style="font-size: 13px">{{ answer.content }}</p>
             </li>
         {% endfor %}
     </ul>

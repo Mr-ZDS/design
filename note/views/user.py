@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.user import LoginForm, RegisterForm, ReiconForm
+from note.forms.user import LoginForm, RegisterForm, ReiconForm, UserForm
 from note.models.user import Users
 from note.util.decorators import delete_icon
 
@@ -141,6 +141,7 @@ def logout():
     return redirect(url_for('user.login'))
 
 
+# 头像更换
 @user_router.route('/re_icon/', methods=['GET', 'POST'])
 @login_required
 @delete_icon
@@ -173,3 +174,60 @@ def re_icon():
         users.icon = form.icon_name.data
         db.session.commit()
         return redirect(url_for('note.home'))
+
+
+# 个人中心
+@user_router.route('personal_center')
+@login_required
+def personal_center():
+    from note.models.communicate import Question
+    from note.models.course import Course2, Upload
+
+    user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
+    question = Question.query.filter(Question.user_id == users.id).all()
+    course2 = Course2.query.filter(Course2.user_id == users.id).all()
+    upload = Upload.query.filter(Upload.user_id == users.id).all()
+    ques_count = Question.query.filter(Question.user_id == users.id).count()
+    course2_count = Course2.query.filter(Course2.user_id == user_id).count()
+    upload_count = Upload.query.filter(Upload.user_id == user_id).count()
+    return render_template(
+        'users/personal_center.html',
+        users=users,
+        question=question,
+        course2=course2,
+        upload=upload,
+        ques_count=ques_count,
+        course2_count=course2_count,
+        upload_count=upload_count
+    )
+
+
+# 用户个人设置，资料更改
+@user_router.route('/update_user/', methods=['GET', 'POST'])
+def update_user():
+    form = UserForm()
+    user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
+    form.telephone.data = users.telephone
+    form.username.data = users.username
+    form.password.data = '******'
+    if request.method == 'GET':
+        return render_template('users/update_user.html', form=form)
+    else:
+        if not form.validate_on_submit():
+            flash(form.errors)
+            return render_template('users/update_user.html', form=form)
+        form1 = UserForm()
+        if Users.query.filter(
+                Users.telephone == form1.telephone.data).first() and form1.telephone.data != form.telephone.data:
+            flash('该手机号码已存在！！！')
+            return render_template('users/update_user.html', form=form)
+        if Users.query.filter(
+                Users.username == 'admin').first() and form1.username.data == 'admin':
+            flash('admin不允许使用！！！')
+            return render_template('users/update_user.html', form=form)
+        users.username = form1.username.data
+        users.telephone = form1.telephone.data
+        db.session.commit()
+        return redirect(url_for('user.personal_center'))

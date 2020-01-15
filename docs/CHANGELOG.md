@@ -89,3 +89,13 @@
 * `/note/models/user.py`  新增`icon`字段
 * `/note/views/user.py`   头像更换路由
 * `/note/views/communicate.py` 文章、笔记编辑
+
+
+#### 2020-01-15
+#### Add 新增个人中心，用户资料修改，评论排序
+* `/note/template/users/personal_center.html`
+* `/note/template/users/update_user.html`
+
+#### Changed 新增功能的路由修改
+* `/note/views/user.py`   个人中心，资料编辑
+* `/note/forms/user.py`   资料修改表单

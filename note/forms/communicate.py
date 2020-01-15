@@ -7,7 +7,8 @@ from wtforms.validators import DataRequired, Length
 class CommForm(FlaskForm):
     title = StringField(
         validators=[
-            DataRequired(message='标题不能为空，请输入标题')
+            DataRequired(message='标题不能为空，请输入标题'),
+            Length(1, 100, message='标题长度在1-100个字符')
         ],
         render_kw={
             'placeholder': '请输入标题（你还可以输入100个字符）',
@@ -21,7 +22,7 @@ class CommForm(FlaskForm):
         render_kw={
             'placeholder': '请输入内容',
             'class': 'form-control',
-            'rows': 5
+            'rows': 10
         }
     )
     submit = SubmitField(
