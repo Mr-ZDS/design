@@ -6,7 +6,8 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.user import LoginForm, RegisterForm, ReiconForm, UserForm
+from note.forms.user import LoginForm, RegisterForm, ReiconForm, UserForm, \
+    ResetpwordForm
 from note.models.communicate import Question
 from note.models.course import Course2, Upload
 from note.models.user import Users
@@ -224,3 +225,25 @@ def update_user():
         users.telephone = form1.telephone.data
         db.session.commit()
         return redirect(url_for('user.personal_center'))
+
+
+# 修改密码
+@user_router.route('/reset_password/', methods=['GET', 'POST'])
+@login_required
+def reset_password():
+    form = ResetpwordForm()
+    user_id = session.get('user_id')
+    users = Users.query.filter(Users.id == user_id).first()
+    if request.method == 'GET':
+        return render_template('users/reset_password.html', form=form)
+    else:
+        if not form.validate_on_submit():
+            flash(form.errors)
+            return render_template('users/reset_password.html', form=form)
+        if users.check_password(form.old_password.data):
+            users.password = Users.get_pword_hash(form.password1.data)
+            db.session.commit()
+            return redirect(url_for('user.logout'))
+        else:
+            flash('旧密码错误，请重新输入！！！')
+            return render_template('users/reset_password.html', form=form)

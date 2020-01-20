@@ -136,3 +136,42 @@ class UserForm(FlaskForm):
         }
     )
 
+
+# 密码修改表单
+class ResetpwordForm(FlaskForm):
+    old_password = PasswordField(
+        validators=[
+            DataRequired(message='请输入旧密码！！！'),
+        ],
+        render_kw={
+            'placeholder': '请输入旧密码',
+            'class': 'form-control'
+        }
+    )
+    password1 = PasswordField(
+        validators=[
+            DataRequired(message='请输入密码！！！'),
+            Length(5, 20, message='密码为5-20个字符')
+        ],
+        render_kw={
+            'placeholder': '请输入新密码',
+            'class': 'form-control'
+        }
+    )
+    password2 = PasswordField(
+        validators=[
+            DataRequired(message='请输入密码！！！'),
+            Length(5, 20, message='密码为5-20个字符'),
+            EqualTo('password1', message="两次密码不一致!")
+        ],
+        render_kw={
+            'placeholder': '请再次输入新密码',
+            'class': 'form-control'
+        }
+    )
+    submit = SubmitField(
+        '立即修改',
+        render_kw={
+            'class': 'btn btn-primary btn-block'
+        }
+    )
