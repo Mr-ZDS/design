@@ -102,11 +102,13 @@
 
 
 #### 2020-01-20
-#### Added  新增笔记按月归档功能, 修改密码功能
+#### Added  新增笔记按月归档功能, 修改密码功能, 笔记编辑功能
 * `/note/util/archive.py`
 * `/note/template/users/reset_password.html`
+* `/note/template/users/edit_note.html`
 
 #### Changed 
 * `/note/views/note.py`
 * `/note/views/user.py`
+* `/note/models/courses.py` 新增html_content字段，保存html，原content保存markdown语法
 

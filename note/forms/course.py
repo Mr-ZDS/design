@@ -66,3 +66,27 @@ class Recourse1Form(FlaskForm):
     submit = SubmitField(
         '立即更新'
     )
+
+
+# 笔记编辑表单
+class EditnoteForm(FlaskForm):
+    title = StringField(
+        validators=[
+            DataRequired(message='请输入标题！！！'),
+            Length(1, 20)
+        ]
+    )
+    content = TextAreaField(
+        validators=[
+            DataRequired(message='请输入笔记内容！！！')
+        ],
+        render_kw={
+            'id': 'TextContent'
+        }
+    )
+    submit = SubmitField(
+        '更新',
+        render_kw={
+            'class': 'finish'
+        }
+    )

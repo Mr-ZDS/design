@@ -21,6 +21,7 @@ class Course2(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    html_content = db.Column(db.Text)
     status = db.Column(db.String(10))  # 笔记状态，是否公开
     create_time = db.Column(db.DateTime, default=datetime.now().strftime(
         '%Y-%m-%d %H:%M:%S'))

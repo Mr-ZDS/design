@@ -7,7 +7,8 @@ import markdown
 from werkzeug.utils import secure_filename
 
 from note.extensions import db
-from note.forms.course import Course1Form, UploadForm, Recourse1Form
+from note.forms.course import Course1Form, UploadForm, Recourse1Form, \
+    EditnoteForm
 from note.models.course import Course1, Course2, Upload
 from note.models.user import Users
 from note.util.archive import monthly_archive
@@ -120,10 +121,13 @@ def record_course():
         else:
             if len(markdowns.strip()) == 0:
                 content = text
+                html_content = text
             else:
                 html = markdown.markdown(markdowns)
-                content = html
-            course2 = Course2(title=title, content=content, status=status)
+                html_content = html
+                content = markdowns
+            course2 = Course2(title=title, content=content, status=status,
+                              html_content=html_content)
             users = Users.query.filter(Users.id == user_id).first()
             course2.users = users
             course2.course1 = course1
@@ -343,8 +347,9 @@ def update_one_directory(course1_id):
         status = request.form.get('status')
         user_id = session.get('user_id')
         form1 = Recourse1Form()
-        if Course1.query.filter(Course1.title == form1.title.data,
-                                Course1.user_id == user_id).first():
+        if Course1.query.filter(
+                Course1.title == form1.title.data,
+                Course1.user_id == user_id).first() and form1.title.data != form.title.data:
             flash('该课程目录已经存在，请重新输入标题！！！')
             return render_template(
                 'courses/update_one_directory.html',
@@ -355,3 +360,33 @@ def update_one_directory(course1_id):
         db.session.commit()
         return redirect(url_for('note.home'))
     return render_template('courses/update_one_directory.html', form=form)
+
+
+# 笔记编辑、修改
+@note_router.route('/edit_note/<course2_id>', methods=['GET', 'POST'])
+def edit_note(course2_id):
+    course2 = Course2.query.filter(Course2.id == course2_id).first()
+    form = EditnoteForm()
+    form.title.data = course2.title
+    form.content.data = course2.content
+    if request.method == 'GET':
+        return render_template('courses/edit_note.html', form=form)
+    else:
+        if not form.validate_on_submit():
+            flash(form.errors)
+            return render_template('courses/edit_note.html', form=form)
+        form1 = EditnoteForm()
+        status = request.form.get('course_status')
+        # 用户目录下不能有相同的笔记名
+        if Course2.query.filter(
+                Course2.course1_id == course2.course1_id,
+                Course2.title == form1.title.data).first() and form1.title.data != form.title.data:
+            flash('该笔记标题已存在！！！')
+            return render_template('courses/edit_note.html', form=form)
+
+        course2.title = form1.title.data
+        course2.status = status
+        course2.content = form1.content.data
+        course2.html_content = markdown.markdown(form.content.data)
+        db.session.commit()
+        return redirect(url_for('note.home'))

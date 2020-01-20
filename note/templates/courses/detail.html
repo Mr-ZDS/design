@@ -18,9 +18,14 @@
                href="{{ url_for('note.note_delete',note_id=detail.id) }}">
                 删除
             </a>
+            <a style="float: right; margin-right: 15px"
+               class="btn btn-primary"
+               href="{{ url_for('note.edit_note',course2_id=detail.id) }}">
+                编辑
+            </a>
         {% endif %}
     </p>
     <div class="question-content">
-        <pre style="font-size: 13px">{{ detail.content|safe }}</pre>
+        <pre style="font-size: 13px">{{ detail.html_content|safe }}</pre>
     </div>
 {% endblock %}
