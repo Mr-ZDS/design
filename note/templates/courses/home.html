@@ -72,5 +72,19 @@
 {% endblock %}
 
 
-{% block show_3 %}
+{% block time %}
+    {% if current_user.is_authenticated %}
+        <dl>
+            {% for month, course2 in res.items() %}
+                {% if course2 != [] %}
+                    <dt class="month">{{ month }}月</dt>
+                    {% for ex in course2 %}
+                        <dd style="margin-left: 20px">
+                            <a style="color: black" href="{{ url_for('note.note_detail',course2_id=ex.id) }}">{{ ex.title }}</a>
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </dl>
+    {% endif %}
 {% endblock %}

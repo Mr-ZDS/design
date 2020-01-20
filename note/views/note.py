@@ -10,6 +10,7 @@ from note.extensions import db
 from note.forms.course import Course1Form, UploadForm, Recourse1Form
 from note.models.course import Course1, Course2, Upload
 from note.models.user import Users
+from note.util.archive import monthly_archive
 from note.util.decorators import delete_file
 
 note_router = Blueprint("note", __name__)
@@ -23,7 +24,8 @@ def home():
     return render_template(
         'courses/home.html',
         course1=course1,
-        users=users
+        users=users,
+        res=monthly_archive()
     )
 
 
@@ -145,7 +147,8 @@ def second_show(course1_id):
         course2=course2,
         course1=course1,
         uploads=uploads,
-        users=users
+        users=users,
+        res=monthly_archive()
     )
 
 
@@ -272,7 +275,8 @@ def note_delete(note_id):
     return render_template(
         'courses/home.html',
         course1=course1,
-        users=users
+        users=users,
+        res=monthly_archive()
     )
 
 
@@ -296,7 +300,8 @@ def file_delete(file_id):
     return render_template(
         'courses/home.html',
         course1=course1,
-        users=users
+        users=users,
+        res=monthly_archive()
     )
 
 
@@ -316,20 +321,14 @@ def directory_delete(course1_id):
     return render_template(
         'courses/home.html',
         course1=course1,
-        users=users
+        users=users,
+        res=monthly_archive()
     )
 
 
-# 笔记按月归档
-# @note_router.route('/sort')
-# def sort():
-#     from sqlalchemy import extract, and_
-#     visit1 = Course2.query.filter(extract('year', Course2.date) == 2019).all()
-#     visit2 = Course2.query.filter(extract('year', Course2.date) == 2020).all()
-#     return render_template('courses/home.html', visit1=visit1, visit2=visit2)
-
-
-@note_router.route('/update_one_directory/<course1_id>', methods=['GET', 'POST'])
+# 一级目录编辑
+@note_router.route('/update_one_directory/<course1_id>',
+                   methods=['GET', 'POST'])
 def update_one_directory(course1_id):
     course1 = Course1.query.filter(Course1.id == course1_id).first()
     form = Recourse1Form()

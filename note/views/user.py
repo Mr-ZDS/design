@@ -7,7 +7,10 @@ from werkzeug.utils import secure_filename
 
 from note.extensions import db
 from note.forms.user import LoginForm, RegisterForm, ReiconForm, UserForm
+from note.models.communicate import Question
+from note.models.course import Course2, Upload
 from note.models.user import Users
+from note.util.archive import monthly_archive, upload_archive, allow_file
 from note.util.decorators import delete_icon
 
 user_router = Blueprint("user", __name__)
@@ -125,15 +128,6 @@ def login():
 #             return render_template('users/login.html')
 
 
-# 图片上传限制格式
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
-
-def allow_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[
-        1].lower() in ALLOWED_EXTENSIONS
-
-
 # 注销
 @user_router.route('/logout/')
 def logout():
@@ -180,9 +174,6 @@ def re_icon():
 @user_router.route('personal_center')
 @login_required
 def personal_center():
-    from note.models.communicate import Question
-    from note.models.course import Course2, Upload
-
     user_id = session.get('user_id')
     users = Users.query.filter(Users.id == user_id).first()
     question = Question.query.filter(Question.user_id == users.id).all()
@@ -199,7 +190,9 @@ def personal_center():
         upload=upload,
         ques_count=ques_count,
         course2_count=course2_count,
-        upload_count=upload_count
+        upload_count=upload_count,
+        res=monthly_archive(),
+        upload_archive=upload_archive()
     )
 
 

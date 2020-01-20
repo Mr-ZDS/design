@@ -99,3 +99,12 @@
 #### Changed 新增功能的路由修改
 * `/note/views/user.py`   个人中心，资料编辑
 * `/note/forms/user.py`   资料修改表单
+
+
+#### 2020-01-20
+#### Added  新增笔记按月归档功能
+* `/note/util/archive.py`
+
+#### Changed 
+* `/note/views/note.py`
+

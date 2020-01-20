@@ -11,7 +11,7 @@
             <img src="http://127.0.0.1:5000/static/images/icon/{{ users.icon }}"
                  alt="" class="avatar">
         </div>
-        <div>
+        <div style="font-size: 13px">
             <p>用户名： {{ users.username }}</p>
             <p>账号： {{ users.telephone }}</p>
             <p>密码： ******</p>
@@ -68,5 +68,33 @@
             </li>
             {% endfor %}
         </ul>
+    </div>
+
+    <div class="lists">
+        <h3>笔记归档</h3>
+        <dl style="font-size: 13px">
+            {% for month, course2 in res.items() %}
+                {% if course2 != [] %}
+                    <dt class="month">{{ month }}月</dt>
+                    {% for ex in course2 %}
+                        <dd style="margin-left: 20px"><a href="{{ url_for('note.note_detail',course2_id=ex.id) }}">{{ ex.title }}</a></dd>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </dl>
+    </div>
+
+    <div class="lists">
+        <h3>文件归档</h3>
+        <dl style="font-size: 13px">
+            {% for month, upload in upload_archive.items() %}
+                {% if upload != [] %}
+                    <dt class="month">{{ month }}月</dt>
+                    {% for ex in upload %}
+                        <dd style="margin-left: 20px"><a href="{{ url_for('note.file_detail',file_id=ex.id) }}">{{ ex.file_name }}</a></dd>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </dl>
     </div>
 {% endblock %}
