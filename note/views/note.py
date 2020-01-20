@@ -387,6 +387,6 @@ def edit_note(course2_id):
         course2.title = form1.title.data
         course2.status = status
         course2.content = form1.content.data
-        course2.html_content = markdown.markdown(form.content.data)
+        course2.html_content = markdown.markdown(form1.content.data)
         db.session.commit()
         return redirect(url_for('note.home'))
